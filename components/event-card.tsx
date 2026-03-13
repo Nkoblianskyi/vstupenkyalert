@@ -25,27 +25,30 @@ export default function EventCard({ event, size = "default" }: EventCardProps) {
       className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-2xl"
       aria-label={`${event.title} – od ${event.priceFrom.toLocaleString("cs-CZ")} Kč`}
     >
-      <article className="h-full flex flex-col bg-card rounded-2xl overflow-hidden border-2 border-border shadow-sm hover:shadow-xl hover:border-accent/50 transition-all duration-300">
-        {/* Obrázek – celá šířka nahoře */}
-        <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+      <article className="h-full flex flex-col bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] hover:border-accent/40 transition-all duration-300">
+        {/* Obrázek + placky */}
+        <div className="relative aspect-16/10 overflow-hidden bg-muted">
           <img
             src={event.image}
             alt=""
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <span className="absolute top-3 left-3 rounded-lg bg-primary/90 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-primary-foreground">
+          <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Kategorie – placka */}
+          <span className="absolute top-4 left-4 rounded-l-full rounded-r-lg bg-primary px-4 py-1.5 pl-4 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow-md">
             {event.category}
           </span>
+          {/* Cena – výrazná placka vpravo dole */}
           {!compact && (
-            <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg bg-card/95 px-3 py-2 text-sm font-bold text-accent backdrop-blur-sm">
-              Od {event.priceFrom.toLocaleString("cs-CZ")} Kč
+            <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-bold text-accent-foreground shadow-lg">
+              od {event.priceFrom.toLocaleString("cs-CZ")} Kč
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </span>
           )}
         </div>
 
-        {/* Obsah */}
-        <div className="flex flex-1 flex-col p-5 min-w-0">
+        {/* Obsah – s jemným levým akcentem při hover */}
+        <div className="flex flex-1 flex-col p-5 min-w-0 border-l-4 border-transparent group-hover:border-accent transition-colors duration-300">
           <h2 className={`font-bold text-foreground leading-snug ${compact ? "text-base" : "text-lg md:text-xl"} line-clamp-2 mb-3`}>
             {event.title}
           </h2>
@@ -60,11 +63,11 @@ export default function EventCard({ event, size = "default" }: EventCardProps) {
             </span>
           </div>
           {compact && (
-            <div className="mt-3 flex items-center justify-between gap-2">
+            <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
               <span className="text-lg font-bold text-accent">
                 od {event.priceFrom.toLocaleString("cs-CZ")} Kč
               </span>
-              <span className="inline-flex items-center gap-1 rounded-lg bg-accent/15 px-3 py-1.5 text-sm font-semibold text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+              <span className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1.5 text-sm font-semibold text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
                 Porovnat <ArrowUpRight className="w-4 h-4" />
               </span>
             </div>

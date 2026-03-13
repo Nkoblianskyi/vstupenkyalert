@@ -15,12 +15,17 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
+        {/* Hero */}
         <section
-          className="relative py-20 md:py-28 px-4 bg-primary"
-          style={{ backgroundImage: "url(/images/hero-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
+          className="relative py-20 md:py-28 px-4 overflow-hidden"
+          style={{
+            background: "linear-gradient(180deg, oklch(0.20 0.07 255) 0%, oklch(0.22 0.06 258) 100%)",
+          }}
         >
-          <div className="absolute inset-0 bg-primary/85" />
           <div className="relative z-10 max-w-4xl mx-auto text-center">
+            <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">
+              O platformě
+            </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 text-balance">
               O nás
             </h1>
@@ -34,12 +39,19 @@ export default function AboutPage() {
           <Disclaimer />
         </div>
 
+        {/* Info sekce – titulka s čárou + dvousloupec, pravý blok = placky statistik */}
         <section className="max-w-6xl mx-auto px-4 lg:px-8 py-16">
           <div className="grid md:grid-cols-2 gap-16 items-start">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-6">
-                Co je Vstupenkyalert?
-              </h2>
+              <div className="flex items-baseline gap-4 mb-6">
+                <span className="h-1 w-12 rounded-full bg-accent shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Platforma</p>
+                  <h2 className="text-3xl font-bold text-foreground">
+                    Co je Vstupenkyalert?
+                  </h2>
+                </div>
+              </div>
               <div className="space-y-5 text-muted-foreground leading-relaxed text-lg">
                 <p>
                   Nákup vstupenek bývá složitý: musíte procházet více stránek, ceny a podmínky se špatně porovnávají. Vstupenkyalert to zjednodušuje – na jednom přehledném místě shrneme nabídky více důvěryhodných partnerů, zdarma a bez registrace.
@@ -52,20 +64,21 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            <div className="bg-secondary rounded-2xl p-10 border-2 border-border">
-              <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-8">Stručně</h3>
-              <dl className="space-y-8">
+            {/* Pravý sloupec – placky se statistikami */}
+            <div className="rounded-2xl border-2 border-border bg-muted/30 p-8">
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Stručně</p>
+              <div className="space-y-6">
                 {[
                   { value: "6+", label: "Porovnávaných partnerů" },
                   { value: "0 Kč", label: "Poplatek za použití" },
                   { value: "100 %", label: "Nezávislá platforma" },
                 ].map((stat) => (
-                  <div key={stat.label} className="flex items-center gap-5">
-                    <dt className="text-5xl font-bold text-accent">{stat.value}</dt>
-                    <dd className="text-muted-foreground text-lg">{stat.label}</dd>
+                  <div key={stat.label} className="flex items-center gap-4 rounded-xl bg-card border border-border px-5 py-4">
+                    <span className="text-3xl md:text-4xl font-bold text-accent tabular-nums">{stat.value}</span>
+                    <span className="text-muted-foreground font-medium">{stat.label}</span>
                   </div>
                 ))}
-              </dl>
+              </div>
               <Link href="/kontakt" className="inline-flex items-center gap-2 mt-8 text-accent font-semibold hover:underline">
                 Kontakt <ArrowRight className="w-4 h-4" />
               </Link>
@@ -73,19 +86,32 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-secondary py-20 px-4" aria-labelledby="values-heading">
+        {/* Hodnoty – titulka + karty s horním akcentem */}
+        <section className="bg-muted/50 py-20 px-4" aria-labelledby="values-heading">
           <div className="max-w-6xl mx-auto">
-            <h2 id="values-heading" className="text-3xl font-bold text-center text-foreground mb-12">
-              Naše hodnoty
-            </h2>
+            <div className="flex items-baseline gap-4 mb-12">
+              <span className="h-1 w-12 rounded-full bg-accent shrink-0" aria-hidden="true" />
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Hodnoty</p>
+                <h2 id="values-heading" className="text-3xl font-bold text-foreground">
+                  Naše hodnoty
+                </h2>
+              </div>
+            </div>
             <div className="grid md:grid-cols-3 gap-8">
               {values.map((v) => (
-                <div key={v.title} className="bg-card border-2 border-border rounded-2xl p-8 shadow-sm hover:border-accent/30 transition-colors">
-                  <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/15 text-accent mb-6">
-                    <v.icon className="w-7 h-7" aria-hidden="true" />
-                  </span>
-                  <h3 className="font-bold text-foreground text-xl mb-3">{v.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{v.desc}</p>
+                <div
+                  key={v.title}
+                  className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md hover:border-accent/30 transition-all duration-300"
+                >
+                  <div className="h-1.5 w-full bg-accent" aria-hidden="true" />
+                  <div className="p-8">
+                    <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/15 text-accent mb-6">
+                      <v.icon className="w-7 h-7" aria-hidden="true" />
+                    </span>
+                    <h3 className="font-bold text-foreground text-xl mb-3">{v.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{v.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>

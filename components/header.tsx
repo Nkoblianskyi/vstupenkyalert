@@ -24,9 +24,11 @@ export default function Header() {
       style={{ borderColor: "var(--header-border)" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-18 min-h-[4.5rem]">
+        <div className="flex items-center justify-between h-18 min-h-18">
           <Link href="/" className="flex items-center gap-3 group">
-            <img src="/icon.svg" alt="Vstupenkyalert" width={40} height={40} className="rounded-xl" />
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 ring-1 ring-accent/30">
+              <img src="/icon.svg" alt="Vstupenkyalert" width={24} height={24} className="rounded-md" />
+            </span>
             <span className="text-xl font-bold text-foreground tracking-tight">
               Vstupenkyalert
             </span>

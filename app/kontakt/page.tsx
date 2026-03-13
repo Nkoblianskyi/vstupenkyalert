@@ -51,12 +51,17 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
+        {/* Hero */}
         <section
-          className="relative py-20 md:py-28 px-4 bg-primary"
-          style={{ backgroundImage: "url(/images/hero-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
+          className="relative py-20 md:py-28 px-4 overflow-hidden"
+          style={{
+            background: "linear-gradient(180deg, oklch(0.20 0.07 255) 0%, oklch(0.22 0.06 258) 100%)",
+          }}
         >
-          <div className="absolute inset-0 bg-primary/85" />
           <div className="relative z-10 max-w-4xl mx-auto text-center">
+            <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">
+              Napište nám
+            </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 text-balance">
               Kontakt
             </h1>
@@ -72,104 +77,128 @@ export default function ContactPage() {
 
         <section className="max-w-6xl mx-auto px-4 lg:px-8 py-16">
           <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-            <div className="bg-card border-2 border-border rounded-2xl p-8 md:p-10 shadow-lg">
-              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-                <Send className="w-6 h-6 text-accent" /> Odeslat zprávu
-              </h2>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
-                {[
-                  { name: "name" as const, label: "Jméno", type: "text", placeholder: "Jan Novák", autoComplete: "name" },
-                  { name: "email" as const, label: "E-mail", type: "email", placeholder: "jan@example.cz", autoComplete: "email" },
-                  { name: "subject" as const, label: "Předmět", type: "text", placeholder: "Předmět zprávy", autoComplete: "off" },
-                ].map((f) => (
-                  <div key={f.name} className="flex flex-col gap-2">
-                    <label htmlFor={f.name} className="text-sm font-semibold text-foreground">
-                      {f.label} <span className="text-destructive">*</span>
+            {/* Formulář – karta s horním akcentem */}
+            <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-lg">
+              <div className="h-1.5 w-full bg-accent" aria-hidden="true" />
+              <div className="p-8 md:p-10">
+                <div className="flex items-baseline gap-3 mb-6">
+                  <Send className="w-6 h-6 text-accent shrink-0" aria-hidden="true" />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-0.5">Formulář</p>
+                    <h2 className="text-2xl font-bold text-foreground">Odeslat zprávu</h2>
+                  </div>
+                </div>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+                  {[
+                    { name: "name" as const, label: "Jméno", type: "text", placeholder: "Jan Novák", autoComplete: "name" },
+                    { name: "email" as const, label: "E-mail", type: "email", placeholder: "jan@example.cz", autoComplete: "email" },
+                    { name: "subject" as const, label: "Předmět", type: "text", placeholder: "Předmět zprávy", autoComplete: "off" },
+                  ].map((f) => (
+                    <div key={f.name} className="flex flex-col gap-2">
+                      <label htmlFor={f.name} className="text-sm font-semibold text-foreground">
+                        {f.label} <span className="text-destructive">*</span>
+                      </label>
+                      <input
+                        id={f.name}
+                        name={f.name}
+                        type={f.type}
+                        value={form[f.name]}
+                        onChange={handleChange}
+                        placeholder={f.placeholder}
+                        autoComplete={f.autoComplete}
+                        aria-invalid={!!errors[f.name]}
+                        aria-describedby={errors[f.name] ? `${f.name}-error` : undefined}
+                        className={`px-4 py-3 rounded-xl border-2 text-base bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent ${
+                          errors[f.name] ? "border-destructive" : "border-border"
+                        }`}
+                      />
+                      {errors[f.name] && (
+                        <p id={`${f.name}-error`} className="text-sm text-destructive">{errors[f.name]}</p>
+                      )}
+                    </div>
+                  ))}
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="message" className="text-sm font-semibold text-foreground">
+                      Zpráva <span className="text-destructive">*</span>
                     </label>
-                    <input
-                      id={f.name}
-                      name={f.name}
-                      type={f.type}
-                      value={form[f.name]}
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      value={form.message}
                       onChange={handleChange}
-                      placeholder={f.placeholder}
-                      autoComplete={f.autoComplete}
-                      aria-invalid={!!errors[f.name]}
-                      aria-describedby={errors[f.name] ? `${f.name}-error` : undefined}
-                      className={`px-4 py-3 rounded-xl border-2 text-base bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent ${
-                        errors[f.name] ? "border-destructive" : "border-border"
+                      placeholder="Napište svou zprávu…"
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? "message-error" : undefined}
+                      className={`px-4 py-3 rounded-xl border-2 text-base bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent resize-y ${
+                        errors.message ? "border-destructive" : "border-border"
                       }`}
                     />
-                    {errors[f.name] && (
-                      <p id={`${f.name}-error`} className="text-sm text-destructive">{errors[f.name]}</p>
+                    {errors.message && (
+                      <p id="message-error" className="text-sm text-destructive">{errors.message}</p>
                     )}
                   </div>
-                ))}
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="message" className="text-sm font-semibold text-foreground">
-                    Zpráva <span className="text-destructive">*</span>
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    value={form.message}
-                    onChange={handleChange}
-                    placeholder="Napište svou zprávu…"
-                    aria-invalid={!!errors.message}
-                    aria-describedby={errors.message ? "message-error" : undefined}
-                    className={`px-4 py-3 rounded-xl border-2 text-base bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent resize-y ${
-                      errors.message ? "border-destructive" : "border-border"
-                    }`}
-                  />
-                  {errors.message && (
-                    <p id="message-error" className="text-sm text-destructive">{errors.message}</p>
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  className="px-8 py-4 rounded-xl bg-accent text-accent-foreground text-base font-bold hover:opacity-90 transition-opacity"
-                >
-                  Odeslat
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto px-8 py-4 rounded-full bg-accent text-accent-foreground text-base font-bold hover:opacity-90 transition-opacity"
+                  >
+                    Odeslat
+                  </button>
+                </form>
+              </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-card border-2 border-border rounded-2xl p-8 shadow-sm flex gap-5 items-start">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-accent/15 text-accent shrink-0">
-                  <Mail className="w-7 h-7" aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="font-bold text-foreground text-lg mb-2">E-mail</h3>
-                  <a href="mailto:info@vstupenkyalert.com" className="text-accent font-semibold hover:underline text-lg">
-                    info@vstupenkyalert.com
-                  </a>
+            {/* Info placky – kompaktní karty s levým akcentem */}
+            <div className="space-y-4">
+              <div className="flex items-baseline gap-4 mb-8">
+                <span className="h-1 w-12 rounded-full bg-accent shrink-0" aria-hidden="true" />
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Kontaktní údaje</p>
+              </div>
+
+              <div className="flex rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:border-accent/30 transition-colors">
+                <div className="w-1.5 shrink-0 bg-accent" aria-hidden="true" />
+                <div className="flex gap-4 p-6">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+                    <Mail className="w-6 h-6" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-foreground text-lg mb-1">E-mail</h3>
+                    <a href="mailto:info@vstupenkyalert.com" className="text-accent font-semibold hover:underline">
+                      info@vstupenkyalert.com
+                    </a>
+                  </div>
                 </div>
               </div>
-              <div className="bg-card border-2 border-border rounded-2xl p-8 shadow-sm flex gap-5 items-start">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-accent/15 text-accent shrink-0">
-                  <Clock className="w-7 h-7" aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="font-bold text-foreground text-lg mb-2">Čas odpovědi</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Obvykle odpovídáme do 1–2 pracovních dnů.
-                  </p>
+
+              <div className="flex rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:border-accent/30 transition-colors">
+                <div className="w-1.5 shrink-0 bg-accent" aria-hidden="true" />
+                <div className="flex gap-4 p-6">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+                    <Clock className="w-6 h-6" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-foreground text-lg mb-1">Čas odpovědi</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Obvykle odpovídáme do 1–2 pracovních dnů.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="bg-card border-2 border-border rounded-2xl p-8 shadow-sm flex gap-5 items-start">
-                <span className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-accent/15 text-accent shrink-0">
-                  <MapPin className="w-7 h-7" aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="font-bold text-foreground text-lg mb-2">Adresa kanceláře (Maďarsko)</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Office Center Budapest<br />
-                    Váci út 45.<br />
-                    1134 Budapest<br />
-                    Maďarsko
-                  </p>
+
+              <div className="flex rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:border-accent/30 transition-colors">
+                <div className="w-1.5 shrink-0 bg-accent" aria-hidden="true" />
+                <div className="flex gap-4 p-6">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+                    <MapPin className="w-6 h-6" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-foreground text-lg mb-1">Adresa kanceláře</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Česko<br />
+                      Praha<br />
+                      Panská 1, 110 00
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -187,10 +216,11 @@ export default function ContactPage() {
           onClick={() => setSubmitted(false)}
         >
           <div
-            className="bg-card border-2 border-border rounded-2xl shadow-2xl p-10 max-w-md w-full text-center"
+            className="bg-card border-2 border-border rounded-2xl shadow-2xl p-10 max-w-md w-full text-center overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-center mb-6">
+            <div className="h-1.5 w-full bg-accent -mt-10 -mx-10 mb-6" aria-hidden="true" />
+            <div className="flex justify-center mb-6 -mt-2">
               <span className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent/15">
                 <CheckCircle className="w-10 h-10 text-accent" aria-hidden="true" />
               </span>
@@ -203,7 +233,7 @@ export default function ContactPage() {
             </p>
             <button
               onClick={() => setSubmitted(false)}
-              className="px-8 py-3 rounded-xl bg-accent text-accent-foreground font-semibold hover:opacity-90 transition-opacity"
+              className="px-8 py-3 rounded-full bg-accent text-accent-foreground font-semibold hover:opacity-90 transition-opacity"
             >
               Zavřít
             </button>

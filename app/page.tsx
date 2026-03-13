@@ -41,55 +41,80 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        {/* Hero – nová struktura: pruh s disclaimerem, pak dvousloupcový blok (text vlevo, vyhledávání vpravo) */}
+        {/* Hero – Bento: disclaimer nahoře, pak mřížka (nadpis + vyhledávání + 3 stat buňky), bez fotky */}
         <section
-          className="relative min-h-[90vh] flex flex-col bg-primary"
+          className="relative flex flex-col min-h-[88vh] overflow-hidden"
           aria-label="Úvod"
-          style={{
-            backgroundImage: "url(/images/hero-bg.jpg)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
         >
-          <div className="absolute inset-0 z-0 bg-primary/75" />
-          <div className="absolute inset-0 z-0 bg-gradient-to-r from-primary/90 via-primary/60 to-transparent" />
-
           <div className="relative z-10 shrink-0">
             <Disclaimer variant="hero" />
           </div>
 
-          <div className="relative z-10 flex-1 flex flex-col lg:flex-row lg:items-center w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 gap-12">
-            <div className="flex-1 text-white max-w-xl">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-5">
-                Ceny vstupenek{" "}
-                <span className="text-accent">na jednom místě</span>
-              </h1>
-              <p className="text-lg text-white/90 mb-8 leading-relaxed">
-                Vyhledávejte, porovnávejte, šetřete. Zdarma a bez registrace.
-              </p>
-              <div className="hidden lg:block">
-                <p className="text-sm text-white/70 mb-2">Porovnáváme ceny u:</p>
-                <div className="flex flex-wrap gap-2">
-                  {partnerNames.slice(0, 4).map((p) => (
-                    <span key={p} className="text-xs font-medium text-white/90 bg-white/15 rounded-lg px-3 py-1.5">
-                      {p}
-                    </span>
-                  ))}
+          {/* Gradient mesh pozadí – žádná fotka */}
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: `
+                radial-gradient(ellipse 80% 50% at 70% 40%, oklch(0.35 0.12 260 / 0.4), transparent 50%),
+                radial-gradient(ellipse 60% 80% at 20% 80%, oklch(0.45 0.15 250 / 0.35), transparent 45%),
+                linear-gradient(180deg, oklch(0.18 0.06 255) 0%, oklch(0.22 0.07 258) 50%, oklch(0.16 0.05 260) 100%)
+              `,
+            }}
+          />
+          <div
+            className="absolute inset-0 z-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `linear-gradient(oklch(1 0 0) 1px, transparent 1px),
+                               linear-gradient(90deg, oklch(1 0 0) 1px, transparent 1px)`,
+              backgroundSize: "48px 48px",
+            }}
+          />
+
+          <div className="relative z-10 flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14 flex flex-col justify-center">
+            {/* Bento grid: nadpis | vyhledávání */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-6 lg:mb-8">
+              {/* Levý blok – nadpis */}
+              <div className="lg:col-span-7 flex flex-col justify-center">
+                <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-4">
+                  Porovnání cen vstupenek
+                </p>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight leading-[1.05]">
+                  Jedno místo.
+                  <br />
+                  <span className="text-accent">Všechny ceny.</span>
+                </h1>
+                <p className="text-white/80 text-lg mt-6 max-w-md">
+                  Vyhledávejte, porovnávejte, šetřete. Zdarma a bez registrace.
+                </p>
+              </div>
+
+              {/* Pravý blok – vyhledávání v „bento“ kartě */}
+              <div className="lg:col-span-5 flex items-center">
+                <div className="w-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 lg:p-8 shadow-2xl">
+                  <HeroSearch />
+                  <p className="text-white/60 text-xs mt-4 text-center">Porovnáváme partnery</p>
+                  <div className="flex flex-wrap justify-center gap-1.5 mt-3">
+                    {partnerNames.map((p) => (
+                      <span key={p} className="text-[11px] font-medium text-white/70 bg-white/10 rounded-md px-2 py-0.5">
+                        {p}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex-shrink-0 w-full lg:max-w-md">
-              <div className="bg-card/95 backdrop-blur-md rounded-2xl border-2 border-white/20 shadow-2xl p-6 lg:p-8">
-                <HeroSearch />
-                <p className="text-muted-foreground text-sm mt-4 text-center">Porovnáváme partnery</p>
-                <div className="flex flex-wrap justify-center gap-2 mt-3">
-                  {partnerNames.map((p) => (
-                    <span key={p} className="text-xs font-medium text-foreground/80 bg-muted/80 rounded-full px-2.5 py-1">
-                      {p}
-                    </span>
-                  ))}
+
+            {/* Spodní řádek – 3 stat buňky v bento stylu */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {stats.map((s) => (
+                <div
+                  key={s.label}
+                  className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-5 py-4 flex items-center gap-4"
+                >
+                  <span className="text-2xl sm:text-3xl font-bold text-accent tabular-nums">{s.value}</span>
+                  <span className="text-white/80 text-sm font-medium">{s.label}</span>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
