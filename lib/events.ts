@@ -56,7 +56,7 @@ export const allEvents: Event[] = [
   },
   {
     id: 6,
-    title: "Ed Sheeran – +-=÷× Tour",
+    title: "Ed Sheeran – Music of the Spheres World Tour",
     date: "30. 5. 2026",
     venue: "Letiště Letňany, Praha",
     category: "Koncert",
